@@ -37,7 +37,7 @@ def load_row(path : str | Path = DEFAULT_RAW_FILE) -> pd.DataFrame:
     return df
 
 def save_processed(df: pd.DataFrame, file_name: str):
-    PROCESSED_DATA_DIR.mkdir(parents=True, exit_ok=True)
+    PROCESSED_DATA_DIR.mkdir(parents=True, exist_ok=True)
     out_path = PROCESSED_DATA_DIR / file_name
     df.to_csv(out_path, index=False)
     return out_path

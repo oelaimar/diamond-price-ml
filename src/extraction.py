@@ -1,13 +1,14 @@
 import pandas as pd
 import numpy as np
 from pathlib import Path
+import joblib
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 RAW_DATA_DIR = PROJECT_ROOT / "data" / "raw"
 PROCESSED_DATA_DIR = PROJECT_ROOT / "data" / "processed"
 
 DEFAULT_RAW_FILE = RAW_DATA_DIR / "diamonds.csv"
-
+MODELS_DIR = PROJECT_ROOT / "models"
 # expected schema
 
 FEATURES = [
@@ -52,6 +53,18 @@ def load_processed(file_name: str) -> pd.DataFrame:
     df = pd.read_csv(path)
     df.columns.str.strip()
     return df
+
+def save_model(obj, filename: str) -> Path:
+    MODELS_DIR.mkdir(parents=True, exist_ok=True)
+    out_path = MODELS_DIR / filename
+    joblib.dump(obj,out_path)
+    return out_path
+
+def load_model(filename: str):
+    path = MODELS_DIR / filename
+    if not path.exists():
+        raise FileNotFoundError(f"Model not found: {path}")
+    return joblib.load(path)
 
 if __name__ == "__main__":
      pass
